@@ -24,3 +24,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(
             get_parent_path(get_parent_path(get_parent_path(__file__))),
             os.getcwd())
+
+        set_os_chdir_to_file_path(currentPath)

@@ -14,3 +14,7 @@ def scan_path(path: str, arrow: function(str), logger: function(object) = print)
 
 def scan_file(path: str, arrow: function(str), logger: function(object) = print) -> None:
     pass
+
+
+def scan_remove(path: str, arrow: function(str), logger: function(object) = print) -> None:
+    pass
