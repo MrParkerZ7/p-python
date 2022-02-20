@@ -33,6 +33,27 @@ class MyTestCase(unittest.TestCase):
         remove_auto(newFileTest)
         self.assertEqual(False, check_is_path_file(newFileTest))
 
+    def test_scan_file_type(self):
+        newFileTest = f"{currentPath}\\test_scan_file_type\\"
+        copy_source(file_test, newFileTest)
+
+        listFile: Iterable[str] = []
+        scan_file_type(
+            newFileTest,
+            lambda path: listFile.append(path),
+            fileType='xxx')
+        self.assertEqual(0, listFile.__len__())
+
+        listFile2: Iterable[str] = []
+        scan_file_type(
+            path=newFileTest,
+            arrow=lambda path: listFile2.append(path),
+            logger=print, fileType="json")
+        self.assertEqual(1, listFile2.__len__())
+
+        remove_auto(newFileTest)
+        self.assertEqual(False, check_is_path_file(newFileTest))
+
     def test_scan_dir(self):
         newFileTest = f"{currentPath}\\test_scan_dir\\"
         copy_source(file_test, newFileTest)

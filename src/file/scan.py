@@ -3,14 +3,13 @@ from .manager import *
 
 
 def scan_path(path: str, arrow, logger=print) -> None:
-    logger('scaning path =', path)
+    logger(f'- scaning path={path}')
     listDir = os.listdir(path)
     for dir in listDir:
-        logger('scaning sub path =', path)
         subPath = f"{path}\\{dir}"
         arrow(subPath)
         if os.path.isdir(subPath):
-            scan_path(subPath, arrow, logger=logger)
+            scan_path(subPath, arrow, logger=lambda msg: logger('  ' + msg))
 
 
 def scan_file(path: str, arrow, logger=print) -> None:
@@ -20,9 +19,9 @@ def scan_file(path: str, arrow, logger=print) -> None:
     scan_path(path, exc_file, logger)
 
 
-def scan_file_type(path: str, arrow, logger=print, *fileTypes: Iterable[str]) -> None:
+def scan_file_type(path: str, arrow, fileType: str, logger=print) -> None:
     def exc_file(path):
-        if check_is_path_file(path) and check_path_file_type(path, *fileTypes):
+        if check_is_path_file(path) and check_path_file_type(path, fileType):
             arrow(path)
     scan_path(path, exc_file, logger)
 
