@@ -1,5 +1,8 @@
+from importlib.resources import path
 import json
+import shutil
 from typing import Iterable
+import os
 
 
 def read_file_to_lines(filePath: str) -> Iterable[str]:
@@ -26,5 +29,24 @@ def write_file_from_lines(writePath: str, lines: Iterable[str]) -> list:
         file.writelines(lines)
 
 
-def remove_path(path: str):
+def check_path_existing(path: str):
+    return os.path.exists(path)
+
+
+def check_file_type(path: str, fileType: str):
     pass
+
+
+def remove_path(path: str):
+    shutil.rmtree(path)
+
+
+def remove_file(path: str):
+    os.remove(path)
+
+
+def remove_auto(path: str):
+    if os.path.isfile(path):
+        remove_file(path)
+    else:
+        remove_path(path)
