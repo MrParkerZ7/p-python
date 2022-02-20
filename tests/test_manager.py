@@ -14,37 +14,71 @@ class MyTestCase(unittest.TestCase):
     def test_list_str_from_file(self):
         self.assertEqual(
             ['{\n', '   "name": "Puck",\n', '   "age": 99\n', '}'],
-            read_file_to_lines(file_test_user_json)
-        )
+            read_file_to_lines(file_test_user_json))
 
     def test_read_file_to_str(self):
         self.assertEqual(
             '{\n   "name": "Puck",\n   "age": 99\n}',
-            read_file_to_str(file_test_user_json)
-        )
+            read_file_to_str(file_test_user_json))
 
     def test_read_file_to_object(self):
         self.assertEqual(
             {'name': 'Puck', 'age': 99},
-            read_file_to_object(file_test_user_json)
-        )
+            read_file_to_object(file_test_user_json))
 
     def test_read_file_byte_to_object(self):
         self.assertEqual(
             {'name': 'Puck', 'age': 99},
-            read_file_byte_to_object(file_test_user_json)
-        )
+            read_file_byte_to_object(file_test_user_json))
+
+    def test_check_path_existing(self):
+        self.assertEqual(
+            True,
+            check_path_existing(file_test))
+        self.assertEqual(
+            False,
+            check_path_existing(file_test + '_non'))
+
+        self.assertEqual(
+            True,
+            check_path_existing(file_test_user_json))
+        self.assertEqual(
+            False,
+            check_path_existing(f'{file_test_user_json}.py'))
+
+    def test_check_file_type(self):
+        self.assertEqual(
+            True,
+            check_file_type(file_test_user_json, '.json'))
+        self.assertEqual(
+            True,
+            check_file_type(file_test_user_json, 'json'))
+        self.assertEqual(
+            False,
+            check_file_type(file_test_user_json+'.py', 'json'))
+        self.assertEqual(
+            False,
+            check_file_type(currentPath, 'json'))
 
     def test_write_file_from_lines(self):
         newInfo = f"{file_test}new_info.text"
         if(check_path_existing(newInfo)):
-            remove_file(newInfo)
+            remove_auto(newInfo)
             sleep(1)
         self.assertEqual(
             None,
             write_file_from_lines(
                 newInfo,
-                ['info\n', 'info\n', 'info\n'])
-        )
+                ['info\n', 'info\n', 'info\n']))
         self.assertEqual(True, check_path_existing(newInfo))
-        remove_file(newInfo)
+        remove_auto(newInfo)
+
+    def test_remove_file_auto(self):
+        testBuild = f"{file_test}build"
+        remove_auto(testBuild)
+        create_dir(testBuild, True)
+        with self.assertRaises(FileExistsError):
+            create_dir(testBuild, False)
+
+        remove_auto(testBuild)
+        self.assertEqual(False, check_path_existing(testBuild))
