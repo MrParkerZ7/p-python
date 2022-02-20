@@ -20,7 +20,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(4, listPath.__len__())
 
         remove_auto(newFileTest)
-        self.assertEqual(False, check_file_existing(newFileTest))
+        self.assertEqual(False, check_is_path_file(newFileTest))
 
     def test_scan_file(self):
         newFileTest = f"{currentPath}\\test_scan_file\\"
@@ -31,20 +31,31 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(3, listFile.__len__())
 
         remove_auto(newFileTest)
-        self.assertEqual(False, check_file_existing(newFileTest))
+        self.assertEqual(False, check_is_path_file(newFileTest))
+
+    def test_scan_dir(self):
+        newFileTest = f"{currentPath}\\test_scan_dir\\"
+        copy_source(file_test, newFileTest)
+
+        listFile: Iterable[str] = []
+        scan_dir(newFileTest, lambda path: listFile.append(path))
+        self.assertEqual(1, listFile.__len__())
+
+        remove_auto(newFileTest)
+        self.assertEqual(False, check_is_path_file(newFileTest))
 
     def test_scan_remove(self):
         newFileTest = f"{currentPath}\\test_scan_remove\\"
         newFileTestPy = f"{newFileTest}Demo.py"
         copy_source(file_test, newFileTest)
 
-        self.assertEqual(True, check_file_existing(newFileTestPy))
+        self.assertEqual(True, check_is_path_file(newFileTestPy))
         scan_remove(newFileTest, lambda path: check_file_type(path, '.py'))
-        self.assertEqual(False, check_file_existing(newFileTestPy))
+        self.assertEqual(False, check_is_path_file(newFileTestPy))
 
         listFile: Iterable[str] = []
         scan_path(newFileTest, lambda path: listFile.append(path))
         self.assertEqual(3, listFile.__len__())
 
-        # remove_auto(newFileTest)
-        self.assertEqual(False, check_file_existing(newFileTest))
+        remove_auto(newFileTest)
+        self.assertEqual(False, check_is_path_file(newFileTest))

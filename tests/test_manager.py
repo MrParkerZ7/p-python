@@ -46,16 +46,30 @@ class MyTestCase(unittest.TestCase):
             False,
             check_path_existing(f'{file_test_user_json}.py'))
 
-    def test_check_file_existing(self):
+    def test_check_is_path_file(self):
         self.assertEqual(
             False,
-            check_file_existing(file_test))
+            check_is_path_file(file_test))
         self.assertEqual(
             True,
-            check_file_existing(file_test_user_json))
+            check_is_path_file(file_test_user_json))
         self.assertEqual(
             False,
-            check_file_existing(f'{file_test_user_json}.py'))
+            check_is_path_file(f'{file_test_user_json}.py'))
+
+    def test_check_is_path_dir(self):
+        self.assertEqual(
+            True,
+            check_is_path_dir(file_test))
+        self.assertEqual(
+            False,
+            check_is_path_dir(file_test + 'XXX'))
+        self.assertEqual(
+            False,
+            check_is_path_dir(file_test_user_json))
+        self.assertEqual(
+            False,
+            check_is_path_dir(f'{file_test_user_json}.py'))
 
     def test_check_file_type(self):
         self.assertEqual(
@@ -129,8 +143,8 @@ class MyTestCase(unittest.TestCase):
         newFileTestUser = f"{newFileTest}User.json"
         newFileTestDemo = f"{newFileTest}Demo.py"
         copy_source(file_test, newFileTest)
-        self.assertEqual(True, check_file_existing(newFileTestUser))
-        self.assertEqual(True, check_file_existing(newFileTestDemo))
+        self.assertEqual(True, check_is_path_file(newFileTestUser))
+        self.assertEqual(True, check_is_path_file(newFileTestDemo))
         remove_auto(newFileTest)
-        self.assertEqual(False, check_file_existing(newFileTestUser))
-        self.assertEqual(False, check_file_existing(newFileTestDemo))
+        self.assertEqual(False, check_is_path_file(newFileTestUser))
+        self.assertEqual(False, check_is_path_file(newFileTestDemo))

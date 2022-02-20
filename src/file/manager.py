@@ -44,14 +44,18 @@ def check_path_existing(path: str):
     return os.path.exists(path)
 
 
-def check_file_existing(path: str):
-    return check_path_existing(path) and os.path.isfile(path)
+def check_is_path_file(path: str):
+    return os.path.isfile(path)
+
+
+def check_is_path_dir(path: str):
+    return os.path.isdir(path)
 
 
 def check_file_type(path: str, fileType: str):  # make dynamic fileType and path
     if not fileType.startswith('.'):
         fileType = '.'+fileType
-    return not os.path.isdir(path) and os.path.isfile(path) and path.endswith(fileType)
+    return check_is_path_file(path) and path.endswith(fileType)
 
 
 def copy_source(sourcePath: str, toPath):
@@ -64,7 +68,7 @@ def create_dir(path: str, exist_ok: bool = True):
 
 def create_tree_parent_path(writePath):
     parentPath = get_parent_path(writePath)
-    if not check_file_existing(parentPath):
+    if not check_is_path_file(parentPath):
         create_dir(parentPath)
 
 
