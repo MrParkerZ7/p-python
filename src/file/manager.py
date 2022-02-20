@@ -40,12 +40,6 @@ def write_file_from_str(writePath: str, str: str, auto_create_tree_path: bool = 
         file.write(str)
 
 
-def create_tree_parent_path(writePath):
-    parentPath = get_parent_path(writePath)
-    if not check_file_existing(parentPath):
-        create_dir(parentPath)
-
-
 def check_path_existing(path: str):
     return os.path.exists(path)
 
@@ -54,14 +48,24 @@ def check_file_existing(path: str):
     return check_path_existing(path) and os.path.isfile(path)
 
 
-def check_file_type(path: str, fileType: str):
+def check_file_type(path: str, fileType: str):  # make dynamic fileType and path
     if not fileType.startswith('.'):
         fileType = '.'+fileType
     return not os.path.isdir(path) and os.path.isfile(path) and path.endswith(fileType)
 
 
+def copy_source(sourcePath: str, toPath):
+    copy_tree(sourcePath, toPath)
+
+
 def create_dir(path: str, exist_ok: bool = True):
     os.makedirs(path, exist_ok=exist_ok)
+
+
+def create_tree_parent_path(writePath):
+    parentPath = get_parent_path(writePath)
+    if not check_file_existing(parentPath):
+        create_dir(parentPath)
 
 
 def remove_path(path: str):
@@ -70,10 +74,6 @@ def remove_path(path: str):
 
 def remove_file(path: str):
     os.remove(path)
-
-
-def copy_source(sourcePath: str, toPath):
-    copy_tree(sourcePath, toPath)
 
 
 def remove_auto(path: str, non_exist_ok: bool = True):

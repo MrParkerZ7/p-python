@@ -124,6 +124,13 @@ class MyTestCase(unittest.TestCase):
         remove_auto(testBuild)
         self.assertEqual(False, check_path_existing(testBuild))
 
-    def test_remove_file_auto(self):
+    def test_copy_source(self):
         newFileTest = f"{currentPath}\\new_file_test\\"
+        newFileTestUser = f"{newFileTest}User.json"
+        newFileTestDemo = f"{newFileTest}Demo.py"
         copy_source(file_test, newFileTest)
+        self.assertEqual(True, check_file_existing(newFileTestUser))
+        self.assertEqual(True, check_file_existing(newFileTestDemo))
+        remove_auto(newFileTest)
+        self.assertEqual(False, check_file_existing(newFileTestUser))
+        self.assertEqual(False, check_file_existing(newFileTestDemo))
