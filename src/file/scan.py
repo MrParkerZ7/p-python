@@ -1,4 +1,5 @@
 import os
+from .manager import *
 
 
 def scan_path(path: str, arrow: function(str), logger: function(object) = print) -> None:
@@ -13,8 +14,21 @@ def scan_path(path: str, arrow: function(str), logger: function(object) = print)
 
 
 def scan_file(path: str, arrow: function(str), logger: function(object) = print) -> None:
-    pass
+    def check_then_remove(path):
+        if arrow(path):
+            remove_auto(path)
+
+    scan_path(path, check_then_remove, logger)
 
 
-def scan_remove(path: str, arrow: function(str), logger: function(object) = print) -> None:
-    pass
+def scan_remove(
+        path: str,
+        arrowReturnBool: function(str),
+        non_exist_ok: bool = True,
+        logger: function(object) = print) -> None:
+
+    def check_then_remove(path):
+        if arrowReturnBool(path):
+            remove_auto(path, non_exist_ok)
+
+    scan_path(path, check_then_remove, logger)

@@ -46,6 +46,17 @@ class MyTestCase(unittest.TestCase):
             False,
             check_path_existing(f'{file_test_user_json}.py'))
 
+    def test_check_file_existing(self):
+        self.assertEqual(
+            False,
+            check_file_existing(file_test))
+        self.assertEqual(
+            True,
+            check_file_existing(file_test_user_json))
+        self.assertEqual(
+            False,
+            check_file_existing(f'{file_test_user_json}.py'))
+
     def test_check_file_type(self):
         self.assertEqual(
             True,
@@ -73,6 +84,36 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(True, check_path_existing(newInfo))
         remove_auto(newInfo)
 
+    def test_write_file_from_str(self):
+        newInfo = f"{file_test}new_info.text"
+        if(check_path_existing(newInfo)):
+            remove_auto(newInfo)
+            sleep(1)
+        self.assertEqual(
+            None,
+            write_file_from_str(
+                newInfo,
+                'info\ninfo\ninfo\n'))
+        self.assertEqual(True, check_path_existing(newInfo))
+        remove_auto(newInfo)
+
+    def test_write_file_from_str_in_deeper_path(self):
+        deepPath = f"{file_test}deeper_path"
+        newInfo = f"{deepPath}\\new_info.text"
+        if(check_path_existing(newInfo)):
+            remove_auto(newInfo)
+            sleep(1)
+        self.assertEqual(
+            None,
+            write_file_from_str(
+                newInfo,
+                'info\ninfo\ninfo\n'))
+        self.assertEqual(True, check_path_existing(newInfo))
+        remove_auto(newInfo)
+        self.assertEqual(True, check_path_existing(deepPath))
+        remove_auto(f"{file_test}deeper_path")
+        self.assertEqual(False, check_path_existing(deepPath))
+
     def test_remove_file_auto(self):
         testBuild = f"{file_test}build"
         remove_auto(testBuild)
@@ -82,3 +123,7 @@ class MyTestCase(unittest.TestCase):
 
         remove_auto(testBuild)
         self.assertEqual(False, check_path_existing(testBuild))
+
+    def test_remove_file_auto(self):
+        newFileTest = f"{currentPath}\\new_file_test\\"
+        copy_source(file_test, newFileTest)

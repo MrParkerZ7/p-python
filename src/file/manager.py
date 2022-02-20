@@ -1,8 +1,10 @@
-from importlib.resources import path
+import os
 import json
 import shutil
 from typing import Iterable
-import os
+from distutils.dir_util import copy_tree, remove_tree, mkpath, create_tree
+
+from ..os.path import get_parent_path
 
 
 def read_file_to_lines(filePath: str) -> Iterable[str]:
@@ -24,13 +26,32 @@ def read_file_byte_to_object(filePath: str) -> dict:
         return json.load(file)
 
 
-def write_file_from_lines(writePath: str, lines: Iterable[str]) -> list:
+def write_file_from_lines(writePath: str, lines: Iterable[str], auto_create_tree_path: bool = True) -> list:
+    if(auto_create_tree_path):
+        create_tree_parent_path(writePath)
     with open(writePath, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
+def write_file_from_str(writePath: str, str: str, auto_create_tree_path: bool = True) -> list:
+    if(auto_create_tree_path):
+        create_tree_parent_path(writePath)
+    with open(writePath, 'w', encoding='utf-8') as file:
+        file.write(str)
+
+
+def create_tree_parent_path(writePath):
+    parentPath = get_parent_path(writePath)
+    if not check_file_existing(parentPath):
+        create_dir(parentPath)
+
+
 def check_path_existing(path: str):
     return os.path.exists(path)
+
+
+def check_file_existing(path: str):
+    return check_path_existing(path) and os.path.isfile(path)
 
 
 def check_file_type(path: str, fileType: str):
@@ -49,6 +70,10 @@ def remove_path(path: str):
 
 def remove_file(path: str):
     os.remove(path)
+
+
+def copy_source(sourcePath: str, toPath):
+    copy_tree(sourcePath, toPath)
 
 
 def remove_auto(path: str, non_exist_ok: bool = True):
