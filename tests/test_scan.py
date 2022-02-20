@@ -50,7 +50,7 @@ class MyTestCase(unittest.TestCase):
         copy_source(file_test, newFileTest)
 
         self.assertEqual(True, check_is_path_file(newFileTestPy))
-        scan_remove(newFileTest, lambda path: check_file_type(path, '.py'))
+        scan_remove(newFileTest, lambda path: check_path_file_type(path, '.py'))
         self.assertEqual(False, check_is_path_file(newFileTestPy))
 
         listFile: Iterable[str] = []

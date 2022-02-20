@@ -74,16 +74,22 @@ class MyTestCase(unittest.TestCase):
     def test_check_file_type(self):
         self.assertEqual(
             True,
-            check_file_type(file_test_user_json, '.json'))
+            check_path_file_type(file_test_user_json, '.json'))
         self.assertEqual(
             True,
-            check_file_type(file_test_user_json, 'json'))
+            check_path_file_type(file_test_user_json, 'json'))
+        self.assertEqual(
+            True,
+            check_path_file_type(file_test_user_json, 'JSON'))
+        self.assertEqual(
+            True,
+            check_path_file_type(file_test_user_json, 'js', 'json'))
         self.assertEqual(
             False,
-            check_file_type(file_test_user_json+'.py', 'json'))
+            check_path_file_type(file_test_user_json+'.py', 'json'))
         self.assertEqual(
             False,
-            check_file_type(currentPath, 'json'))
+            check_path_file_type(currentPath, 'json'))
 
     def test_write_file_from_lines(self):
         newInfo = f"{file_test}new_info.text"

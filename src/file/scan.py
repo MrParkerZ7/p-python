@@ -14,10 +14,17 @@ def scan_path(path: str, arrow, logger=print) -> None:
 
 
 def scan_file(path: str, arrow, logger=print) -> None:
-    def check_path_is_file(path):
+    def exc_file(path):
         if check_is_path_file(path):
             arrow(path)
-    scan_path(path, check_path_is_file, logger)
+    scan_path(path, exc_file, logger)
+
+
+def scan_file_type(path: str, arrow, logger=print, *fileTypes: Iterable[str]) -> None:
+    def exc_file(path):
+        if check_is_path_file(path) and check_path_file_type(path, *fileTypes):
+            arrow(path)
+    scan_path(path, exc_file, logger)
 
 
 def scan_dir(path: str, arrow, logger=print) -> None:

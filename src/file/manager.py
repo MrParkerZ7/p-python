@@ -52,10 +52,15 @@ def check_is_path_dir(path: str):
     return os.path.isdir(path)
 
 
-def check_file_type(path: str, fileType: str):  # make dynamic fileType and path
-    if not fileType.startswith('.'):
-        fileType = '.'+fileType
-    return check_is_path_file(path) and path.endswith(fileType)
+def check_path_file_type(path: str, *fileTypes: Iterable[str]):
+    if not check_is_path_file(path):
+        return False
+    for fileType in fileTypes:
+        if not fileType.startswith('.'):
+            fileType = '.'+fileType
+        if path.lower().endswith(fileType.lower()):
+            return True
+    return False
 
 
 def copy_source(sourcePath: str, toPath):
