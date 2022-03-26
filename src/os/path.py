@@ -1,8 +1,8 @@
 import os
 
 
-def get_file_name(file) -> str:
-    return os.path.basename(file)
+def get_source_name_by_path(path) -> str:
+    return os.path.basename(path)
 
 
 def get_parent_path(fileOrPath) -> str:

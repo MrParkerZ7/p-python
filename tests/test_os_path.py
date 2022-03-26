@@ -10,7 +10,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(currentPath, get_parent_path(__file__))
 
     def test_get_file_name(self):
-        self.assertEqual(os.path.basename(__file__), get_file_name(__file__))
+        self.assertEqual(os.path.basename(__file__), get_source_name_by_path(__file__))
+        self.assertEqual('tests', get_source_name_by_path(get_parent_path(__file__)))
 
     def test_set_os_chdir_to_file_path(self):
         self.assertEqual(

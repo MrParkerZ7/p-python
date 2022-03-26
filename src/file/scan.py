@@ -1,5 +1,6 @@
 import os
-from .manager import *
+
+from ..module import *
 
 
 def scan_path(path: str, arrow, logger=print) -> None:
@@ -42,5 +43,19 @@ def scan_remove(
     def check_then_remove(path):
         if arrowReturnBool(path):
             remove_auto(path, non_exist_ok)
+
+    scan_path(path, check_then_remove, logger)
+
+
+def scan_remove_dir_file(
+        path: str,
+        dirNames: Iterable[str],
+        fileTypes: Iterable[str],
+        non_exist_ok: bool = True,
+        logger=print) -> None:
+
+    def check_then_remove(path):
+        get_source_name_by_path(path)
+        remove_auto(path, non_exist_ok)
 
     scan_path(path, check_then_remove, logger)
