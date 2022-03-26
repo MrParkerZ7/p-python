@@ -1,4 +1,5 @@
 import os
+from tkinter import N
 
 from ..module import *
 
@@ -49,13 +50,27 @@ def scan_remove(
 
 def scan_remove_dir_file(
         path: str,
-        dirNames: Iterable[str],
-        fileTypes: Iterable[str],
+        dirNames: Iterable[str] = [],
+        fileNames: Iterable[str] = [],
+        fileTypes: Iterable[str] = [],
         non_exist_ok: bool = True,
         logger=print) -> None:
 
     def check_then_remove(path):
-        get_source_name_by_path(path)
-        remove_auto(path, non_exist_ok)
+        sourceName: str = get_source_name_by_path(path)
+        if(check_is_path_dir(path)):
+            for dirName in dirNames:
+                if(dirName == sourceName):
+                    remove_auto(path, non_exist_ok)
+                    return
+        else:
+            for typeName in fileTypes:
+                if(sourceName.endswith(typeName)):
+                    remove_auto(path, non_exist_ok)
+                    return
+            for fileName in fileNames:
+                if(fileName == sourceName):
+                    remove_auto(path, non_exist_ok)
+                    return
 
     scan_path(path, check_then_remove, logger)

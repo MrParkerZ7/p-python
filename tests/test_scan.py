@@ -17,7 +17,7 @@ class MyTestCase(unittest.TestCase):
 
         listPath: Iterable[str] = []
         scan_path(newFileTest, lambda path: listPath.append(path))
-        self.assertEqual(4, listPath.__len__())
+        self.assertEqual(8, listPath.__len__())
 
         remove_auto(newFileTest)
         self.assertEqual(False, check_is_path_file(newFileTest))
@@ -28,7 +28,7 @@ class MyTestCase(unittest.TestCase):
 
         listFile: Iterable[str] = []
         scan_file(newFileTest, lambda path: listFile.append(path))
-        self.assertEqual(3, listFile.__len__())
+        self.assertEqual(6, listFile.__len__())
 
         remove_auto(newFileTest)
         self.assertEqual(False, check_is_path_file(newFileTest))
@@ -60,7 +60,7 @@ class MyTestCase(unittest.TestCase):
 
         listFile: Iterable[str] = []
         scan_dir(newFileTest, lambda path: listFile.append(path))
-        self.assertEqual(1, listFile.__len__())
+        self.assertEqual(2, listFile.__len__())
 
         remove_auto(newFileTest)
         self.assertEqual(False, check_is_path_file(newFileTest))
@@ -76,7 +76,28 @@ class MyTestCase(unittest.TestCase):
 
         listFile: Iterable[str] = []
         scan_path(newFileTest, lambda path: listFile.append(path))
-        self.assertEqual(3, listFile.__len__())
+        self.assertEqual(7, listFile.__len__())
+
+        remove_auto(newFileTest)
+        self.assertEqual(False, check_is_path_file(newFileTest))
+
+    def test_scan_remove_dir_file(self):
+        newFileTest = f"{currentPath}\\test_scan_remove_dir_file\\"
+        newFileTestPy = f"{newFileTest}Demo.py"
+        newDirTestSource = f"{newFileTest}source"
+        copy_source(file_test, newFileTest)
+
+        self.assertEqual(True, check_is_path_dir(newDirTestSource))
+        scan_remove_dir_file(
+            newFileTest,
+            dirNames=['source'],
+            fileTypes=['.py'],
+            fileNames=['User.json'])
+        self.assertEqual(False, check_is_path_dir(newDirTestSource))
+
+        listFile: Iterable[str] = []
+        scan_path(newFileTest, lambda path: listFile.append(path))
+        self.assertEqual(1, listFile.__len__())
 
         remove_auto(newFileTest)
         self.assertEqual(False, check_is_path_file(newFileTest))
